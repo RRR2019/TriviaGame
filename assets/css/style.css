@@ -4,7 +4,10 @@ body{
      
 }
 
+#title, .card-title {
+    font-family: 'Fascinate', cursive;
 
+}
 .text-center{
     margin-top: 7em;
     margin-left: 2em;
