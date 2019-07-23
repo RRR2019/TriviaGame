@@ -31,7 +31,7 @@ var triviaGame = {
 
 var correct = 0;
 var incorrect = 0;
-var timer = 5;
+var timer =8;
 var timerOn = false;
 var currentQuestion = 1;
 var stateQuestions=false;
@@ -40,8 +40,6 @@ $(".card-body").hide();
 
 
 $("#btnStart").click(function () {
-    timerOn = true;
-    stateQuestions = true;
     start();
     
 
@@ -52,6 +50,9 @@ function start() {
     $("#subTitle").hide();
     $("#btnStart").hide();
     $(".card-body").show();
+    timerOn = true;
+    stateQuestions = true;
+    timer=8;
     setTimer();
     questions(timer, currentQuestion);
 }
@@ -62,13 +63,21 @@ function setTimer(time) {
         intervalId = setInterval(count, 1000);
         timerOn = false;
     }
+    if(time>0 && time<3){
+        $("#timer").html("Times Up!");
+        $("#question").html("");
+        $("#allButtons").hide();
+
+
+    }
+
     if (time === 0) {
         clearInterval(intervalId);
-        $("#timer").html("Times Up!");
+        
         incorrect++;
         currentQuestion++;
         stateQuestions=true;
-        questions(5,currentQuestion);
+        start();
         timerOn = false;
 
     }
@@ -86,7 +95,7 @@ function questions(time, question) {
     console.log(question);
     var ops = triviaGame.options.o1;
     var ops2 = triviaGame.options.o2;
-
+    var ops3 = triviaGame.options.o3;
     if (stateQuestions) {
         if(question===1){
         $("#question").html(triviaGame.question.q1);
@@ -94,24 +103,41 @@ function questions(time, question) {
             var buttons = $("<button>")
             buttons.attr("class","btn btn-dark btn-lg m-2 options");
             buttons.attr("type", "button");
-            buttons.attr("value", i);
+            buttons.attr("id", i);
             buttons.append(ops[i]);
             $(".btn-group-vertical").append(buttons);
             stateQuestions=false;
+            timer =8;
             }
         }
         else if(question===2){
             
             $("#question").html(triviaGame.question.q2);
-            console.log(ops2);
-            for (var j = 0; j < ops2.length; j++) {
-
+            $("#allButtons").show();
+                $("#0").text(ops2[0]);
+                $("#1").text(ops2[1]);
+                $("#2").text(ops2[2]);
+                $("#3").text(ops2[3]);
                 stateQuestions=false;
+                timer =8;
+
+                }
+        else if(question===3){
+            
+            $("#question").html(triviaGame.question.q3);
+            $("#allButtons").show();
+                $("#0").text(ops3[0]);
+                $("#1").text(ops3[1]);
+                $("#2").text(ops3[2]);
+                $("#3").text(ops3[3]);
+                stateQuestions=false;
+                timer =8;
+
                 }
             }
         }
 
-    }
+    
 
 
 
