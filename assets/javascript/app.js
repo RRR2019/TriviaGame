@@ -108,6 +108,7 @@ function questions(time, question) {
             $(".btn-group-vertical").append(buttons);
             stateQuestions=false;
             timer =8;
+            check(triviaGame.answers.a1);
             }
         }
         else if(question===2){
@@ -141,6 +142,17 @@ function questions(time, question) {
 
 
 
-function check(){
-  
+function check(answer){
+  $(".btn").click(function(){
+    if($(this).text()===answer){
+        $("#question").html("CORRECT!");
+        currentQuestion++;
+        
+        start();
+
+
+    }
+
+
+  });
 }
