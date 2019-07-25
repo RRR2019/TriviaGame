@@ -43,13 +43,13 @@ var triviaGame = {
     a7: "Stranger Things"
   },
   images: {
-    i1: "../images/breakingbad.gif",
-    i2: "../images/dark.gif",
-    i3: "../images/friends.gif",
-    i4: "../images/got.gif",
-    i5: "../images/office.gif",
-    i6: "../images/rm.gif",
-    i7: "../images/st.gif"
+    i1: "assets/images/breakingbad.gif",
+    i2: "assets/images/dark.gif",
+    i3: "assets/images/friends.gif",
+    i4: "assets/images/got.gif",
+    i5: "assets/images/office.gif",
+    i6: "assets/images/rm.gif",
+    i7: "assets/images/st.gif"
   }
 };
 
@@ -61,6 +61,8 @@ var intervalId;
 var timerOn = false;
 var currentQuestion = 1;
 var stateQuestions = false;
+var gif = false;
+var secondTime = false;
 $(".card-body").hide();
 
 $("#btnStart").click(function() {
@@ -73,6 +75,7 @@ function start() {
   $("#btnStart").hide();
   $(".card-body").show();
   $(".options").off();
+  $("#coolGif").hide();
   timerOn = true;
   stateQuestions = true;
   clearInterval(intervalId);
@@ -127,7 +130,11 @@ function questions(question) {
       }
       stateQuestions = false;
       timer = 8;
-      check(triviaGame.answers.a1);
+      gif = true;
+      check(triviaGame.answers.a1, triviaGame.images.i1);
+      if (!secondTime) {
+        createGif();
+      }
     } else if (question === 2) {
       $("#question").html(triviaGame.question.q2);
       $("#allButtons").show();
@@ -137,7 +144,7 @@ function questions(question) {
       $("#3").text(ops2[3]);
       stateQuestions = false;
       timer = 8;
-      check(triviaGame.answers.a2);
+      check(triviaGame.answers.a2, triviaGame.images.i2);
     } else if (question === 3) {
       $("#question").html(triviaGame.question.q3);
       $("#allButtons").show();
@@ -148,7 +155,7 @@ function questions(question) {
       stateQuestions = false;
       timer = 8;
 
-      check(triviaGame.answers.a3);
+      check(triviaGame.answers.a3, triviaGame.images.i3);
     } else if (question === 4) {
       $("#question").html(triviaGame.question.q4);
       $("#allButtons").show();
@@ -159,7 +166,7 @@ function questions(question) {
       stateQuestions = false;
       timer = 8;
 
-      check(triviaGame.answers.a4);
+      check(triviaGame.answers.a4, triviaGame.images.i4);
     } else if (question === 5) {
       $("#question").html(triviaGame.question.q5);
       $("#allButtons").show();
@@ -170,7 +177,7 @@ function questions(question) {
       stateQuestions = false;
       timer = 8;
 
-      check(triviaGame.answers.a5);
+      check(triviaGame.answers.a5, triviaGame.images.i5);
     } else if (question === 6) {
       $("#question").html(triviaGame.question.q6);
       $("#allButtons").show();
@@ -181,7 +188,7 @@ function questions(question) {
       stateQuestions = false;
       timer = 8;
 
-      check(triviaGame.answers.a6);
+      check(triviaGame.answers.a6, triviaGame.images.i6);
     } else if (question === 7) {
       $("#question").html(triviaGame.question.q7);
       $("#allButtons").show();
@@ -192,7 +199,7 @@ function questions(question) {
       stateQuestions = false;
       timer = 8;
 
-      check(triviaGame.answers.a7);
+      check(triviaGame.answers.a7, triviaGame.images.i7);
     } else if (question === 8) {
       $("#question").html(
         "Incorrect: " +
@@ -215,12 +222,18 @@ function questions(question) {
           $(".options").remove();
           start();
           $("#btnStart").off();
+          $("#allButtons").show();
+          correct = 0;
+          incorrect = 0;
+          unanswered = 0;
+          secondTime = true;
         });
     }
   }
 }
 
-function check(answer) {
+function check(answer, image) {
+  gif = false;
   $(".options").off();
   console.log(answer);
 
@@ -229,6 +242,7 @@ function check(answer) {
       $("#question").html("CORRECT!");
       $("#timer").html("");
       correct++;
+      gifAppear(image);
 
       console.log($(this).text());
       console.log(currentQuestion);
@@ -236,6 +250,9 @@ function check(answer) {
       clearInterval(intervalId);
       $(".options").off();
       currentQuestion++;
+      if (currentQuestion === 1) {
+        gifAppear(triviaGame.images.i1);
+      }
     } else if ($(this).text() !== answer) {
       $("#question").html("INCORRECT! " + "right answer is: " + answer);
       $("#timer").html("");
@@ -248,10 +265,25 @@ function check(answer) {
     }
   });
 }
-
-function gifAppear(imgSource) {
+function createGif() {
   var newImg = $("<img>");
-  newImg.attr("src", imgSource);
+  newImg.attr("src", "");
   newImg.attr("alt", "Gif");
   newImg.attr("class", "img-thumbnail");
+  newImg.attr("id", "coolGif");
+  var img = $("<div>");
+  img.append(newImg);
+  $(".card-title").append(img);
+  $("#coolGif").hide();
+}
+
+function gifAppear(imgSource) {
+  if (gif) {
+    $("#coolGif").hide();
+    $("#allButtons").show();
+  } else {
+    $("#coolGif").attr("src", imgSource);
+    $("#coolGif").show();
+    $("#allButtons").hide();
+  }
 }
