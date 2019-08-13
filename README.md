@@ -1,2 +1,2 @@
 # TriviaGame
-Trivia Game with Javascript and Jquery
+TV Shows Trivia Game built with HTML5, CSS3, Javascript and Jquery.
